@@ -5,7 +5,7 @@ interface FixSuggestionsProps {
   onApplyFix: (issueId: string) => void;
 }
 
-export const FixSuggestions: React.FC<FixSuggestionsProps> = ({
+export const FixSuggestions: React.FC<FixSuggestionsProps> =({
   issue,
   onApplyFix
 }) => {

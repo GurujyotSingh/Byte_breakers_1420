@@ -1,5 +1,4 @@
 import React from 'react';
-
 interface Categories {
   citations: number;
   headings: number;
@@ -10,17 +9,17 @@ interface Categories {
 }
 
 interface CategoryScoresProps {
-  categories: Categories;
+  categories?: Categories;
 }
 
 export const CategoryScores: React.FC<CategoryScoresProps> = ({ categories }) => {
   const categoriesList = [
-    { key: 'citations', label: 'Citations', score: categories.citations },
-    { key: 'references', label: 'References', score: categories.references },
-    { key: 'headings', label: 'Headings', score: categories.headings },
-    { key: 'figures', label: 'Figures', score: categories.figures },
-    { key: 'layout', label: 'Layout', score: categories.layout },
-    { key: 'abstract', label: 'Abstract', score: categories.abstract },
+    { key: 'citations', label: 'Citations', score: categories?.citations },
+    { key: 'references', label: 'References', score: categories?.references },
+    { key: 'headings', label: 'Headings', score: categories?.headings },
+    { key: 'figures', label: 'Figures', score: categories?.figures },
+    { key: 'layout', label: 'Layout', score: categories?.layout },
+    { key: 'abstract', label: 'Abstract', score: categories?.abstract },
   ];
 
   return (
