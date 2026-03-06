@@ -49,138 +49,58 @@ export const JournalSelector: React.FC<JournalSelectorProps> = ({
 
   // Fetch journals
   useEffect(() => {
-    const fetchJournals = async () => {
-      setLoadingJournals(true);
+  const fetchJournals = async () => {
+    setLoadingJournals(true);
+    try {
+      // Fetch from Supabase instead of using mock data
+      const data = await journalService.getAllJournals();
       
-      const mockJournals: Journal[] = [
-        {
-          id: 'nature',
-          name: 'Nature',
-          publisher: 'Springer Nature',
-          style: 'Nature Style',
-          impactFactor: 69.504,
-          categories: ['multidisciplinary', 'life-sciences', 'physical-sciences'],
-          openAccess: false,
-          rules: {
-            journalName: 'Nature',
-            citationStyle: createCitationStyle('Nature', '2024'),
-            headingStyles: [],
-            referenceFormat: { order: 'alphabetical', hangingIndent: true, lineSpacing: 2 },
-            documentLayout: { 
-              margins: { top: 1, bottom: 1, left: 1, right: 1 }, 
-              font: 'Times New Roman', 
-              fontSize: 12, 
-              lineSpacing: 2 
-            },
-            abstractFormat: { structured: false },
-            figureTableRules: { captionPosition: 'below', numberingStyle: 'Figure 1' }
-          }
-        },
-        {
-          id: 'science',
-          name: 'Science',
-          publisher: 'AAAS',
-          style: 'Science Style',
-          impactFactor: 63.714,
-          categories: ['multidisciplinary'],
-          openAccess: false,
-          rules: {
-            journalName: 'Science',
-            citationStyle: createCitationStyle('Science', '2024'),
-            headingStyles: [],
-            referenceFormat: { order: 'alphabetical', hangingIndent: true, lineSpacing: 2 },
-            documentLayout: { 
-              margins: { top: 1, bottom: 1, left: 1, right: 1 }, 
-              font: 'Times New Roman', 
-              fontSize: 12, 
-              lineSpacing: 2 
-            },
-            abstractFormat: { structured: false },
-            figureTableRules: { captionPosition: 'below', numberingStyle: 'Fig. 1' }
-          }
-        },
-        {
-          id: 'cell',
-          name: 'Cell',
-          publisher: 'Elsevier',
-          style: 'Cell Style',
-          impactFactor: 66.85,
-          categories: ['life-sciences'],
-          openAccess: false,
-          rules: {
-            journalName: 'Cell',
-            citationStyle: createCitationStyle('Cell', '2024'),
-            headingStyles: [],
-            referenceFormat: { order: 'alphabetical', hangingIndent: true, lineSpacing: 2 },
-            documentLayout: { 
-              margins: { top: 1, bottom: 1, left: 1, right: 1 }, 
-              font: 'Arial', 
-              fontSize: 11, 
-              lineSpacing: 1.5 
-            },
-            abstractFormat: { structured: true },
-            figureTableRules: { captionPosition: 'below', numberingStyle: 'Figure 1' }
-          }
-        },
-        {
-          id: 'plos-one',
-          name: 'PLOS ONE',
-          publisher: 'PLOS',
-          style: 'PLOS Style',
-          impactFactor: 3.752,
-          categories: ['multidisciplinary'],
-          openAccess: true,
-          rules: {
-            journalName: 'PLOS ONE',
-            citationStyle: createCitationStyle('Vancouver', '2024'),
-            headingStyles: [],
-            referenceFormat: { order: 'numeric', hangingIndent: false, lineSpacing: 2 },
-            documentLayout: { 
-              margins: { top: 1, bottom: 1, left: 1, right: 1 }, 
-              font: 'Times New Roman', 
-              fontSize: 12, 
-              lineSpacing: 2 
-            },
-            abstractFormat: { 
-              structured: true, 
-              sections: ['Background', 'Methods', 'Results', 'Conclusion'] 
-            },
-            figureTableRules: { captionPosition: 'below', numberingStyle: 'Fig 1' }
-          }
-        },
-        {
-          id: 'ieee-access',
-          name: 'IEEE Access',
-          publisher: 'IEEE',
-          style: 'IEEE Style',
-          impactFactor: 3.476,
-          categories: ['engineering', 'physical-sciences'],
-          openAccess: true,
-          rules: {
-            journalName: 'IEEE Access',
-            citationStyle: createCitationStyle('IEEE', '2024'),
-            headingStyles: [],
-            referenceFormat: { order: 'order-of-appearance', hangingIndent: true, lineSpacing: 1 },
-            documentLayout: { 
-              margins: { top: 1, bottom: 1, left: 1, right: 1 }, 
-              font: 'Times New Roman', 
-              fontSize: 10, 
-              lineSpacing: 1 
-            },
-            abstractFormat: { structured: false, wordLimit: 250 },
-            figureTableRules: { captionPosition: 'below', numberingStyle: 'Fig. 1' }
-          }
+      // Transform to match your Journal type if needed
+      const transformedJournals: Journal[] = data.map(item => ({
+        id: item.id,
+        name: item.name,
+        publisher: item.publisher || 'Unknown',
+        style: item.style_code,
+        impactFactor: item.impact_factor,
+        categories: item.categories || [],
+        openAccess: item.open_access || false,
+        rules: {
+          journalName: item.name,
+          citationStyle: { 
+            type: item.style_code, 
+            version: '2024', 
+            inTextFormat: '', 
+            bibliographyFormat: '', 
+            rules: {} 
+          },
+          headingStyles: item.heading_rules || [],
+          referenceFormat: { 
+            order: item.reference_order || 'alphabetical', 
+            hangingIndent: true, 
+            lineSpacing: 2 
+          },
+          documentLayout: item.font_rules || { 
+            margins: { top: 1, bottom: 1, left: 1, right: 1 }, 
+            font: 'Times New Roman', 
+            fontSize: 12, 
+            lineSpacing: 2 
+          },
+          abstractFormat: { structured: false },
+          figureTableRules: { captionPosition: 'below', numberingStyle: 'Figure 1' }
         }
-      ];
+      }));
       
-      setJournals(mockJournals);
-      setFilteredJournals(mockJournals);
+      setJournals(transformedJournals);
+      setFilteredJournals(transformedJournals);
+    } catch (error) {
+      console.error('Failed to fetch journals:', error);
+    } finally {
       setLoadingJournals(false);
-    };
+    }
+  };
 
-    fetchJournals();
-  }, []);
-
+  fetchJournals();
+}, []);
   // Filter journals based on search and filters
   useEffect(() => {
     let filtered = journals;

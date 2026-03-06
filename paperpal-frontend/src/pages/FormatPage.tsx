@@ -21,8 +21,8 @@ export const FormatPage: React.FC = () => {
       </div>
 
       {step === 1 && (
-        <FileUploader onUpload={() => setStep(2)} />
-      )}
+  <FileUploader onDocumentParsed={() => setStep(2)} />
+)}
     </div>
   );
 };
