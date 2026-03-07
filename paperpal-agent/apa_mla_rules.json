@@ -1,0 +1,413 @@
+{
+  "source": "Purdue OWL",
+  "version": "2024",
+  "styles": {
+    "APA": {
+      "edition": "7th",
+      "general_format": {
+        "paper_size": "8.5 x 11 inches",
+        "margin": "1 inch on all sides",
+        "line_spacing": "double",
+        "alignment": "left",
+        "paragraph_indent": "0.5 inch",
+        "fonts_allowed": [
+          "Times New Roman 12",
+          "Arial 11",
+          "Calibri 11",
+          "Georgia 11",
+          "Lucida Sans Unicode 10",
+          "Computer Modern 11"
+        ],
+        "preferred_font": "Times New Roman 12",
+        "page_numbers": {
+          "position": "top right header",
+          "start_from": 1,
+          "format": "arabic numerals"
+        }
+      },
+      "title_page": {
+        "student_paper": {
+          "running_head": "not required",
+          "page_number": "top right, page 1",
+          "elements_order": [
+            "paper_title",
+            "author_name",
+            "institutional_affiliation",
+            "course_number_and_name",
+            "instructor_name",
+            "assignment_due_date"
+          ],
+          "title_format": {
+            "position": "centered, upper half of page",
+            "bold": true,
+            "case": "title case",
+            "max_lines": 2,
+            "font_size": 12
+          },
+          "author_format": {
+            "position": "centered, below title (one blank line)",
+            "bold": false,
+            "format": "First Middle Last (no degrees or titles)"
+          }
+        },
+        "professional_paper": {
+          "running_head": {
+            "required": true,
+            "format": "SHORTENED TITLE IN ALL CAPS",
+            "max_characters": 50,
+            "position": "top left header, page 1 onwards"
+          },
+          "elements_order": [
+            "paper_title",
+            "author_name",
+            "institutional_affiliation",
+            "author_note",
+            "page_number"
+          ]
+        }
+      },
+      "abstract": {
+        "required": "recommended",
+        "word_limit_min": 150,
+        "word_limit_max": 250,
+        "heading": {
+          "text": "Abstract",
+          "format": "centered, bold, not italic, title case",
+          "level": 1
+        },
+        "body_format": {
+          "indent": "none — no first-line indent",
+          "alignment": "left",
+          "spacing": "double"
+        },
+        "keywords": {
+          "required": false,
+          "format": "Keywords: keyword1, keyword2, keyword3",
+          "label_format": "italic",
+          "position": "new line below abstract, indent 0.5 inch"
+        }
+      },
+      "headings": {
+        "level1": {
+          "description": "Major sections",
+          "format": "Centered, Bold, Title Case",
+          "alignment": "center",
+          "bold": true,
+          "italic": false,
+          "indent": "none",
+          "period": false,
+          "examples": [
+            "Abstract",
+            "Introduction",
+            "Method",
+            "Results",
+            "Discussion",
+            "References",
+            "Conclusion"
+          ]
+        },
+        "level2": {
+          "description": "Subsections of Level 1",
+          "format": "Left Aligned, Bold, Title Case",
+          "alignment": "left",
+          "bold": true,
+          "italic": false,
+          "indent": "none",
+          "period": false,
+          "examples": [
+            "Participants",
+            "Materials",
+            "Procedure",
+            "Data Analysis",
+            "Design"
+          ]
+        },
+        "level3": {
+          "description": "Subsections of Level 2",
+          "format": "Left Aligned, Bold Italic, Title Case",
+          "alignment": "left",
+          "bold": true,
+          "italic": true,
+          "indent": "none",
+          "period": false,
+          "examples": [
+            "Inclusion Criteria",
+            "Exclusion Criteria",
+            "Statistical Analysis"
+          ]
+        },
+        "level4": {
+          "description": "Subsections of Level 3",
+          "format": "Indented 0.5 inch, Bold, Title Case, ends with period, text continues on same line",
+          "alignment": "left",
+          "bold": true,
+          "italic": false,
+          "indent": "0.5 inch",
+          "period": true,
+          "text_continues": true
+        },
+        "level5": {
+          "description": "Subsections of Level 4",
+          "format": "Indented 0.5 inch, Bold Italic, Title Case, ends with period, text continues on same line",
+          "alignment": "left",
+          "bold": true,
+          "italic": true,
+          "indent": "0.5 inch",
+          "period": true,
+          "text_continues": true
+        }
+      },
+      "body_text": {
+        "font": "Times New Roman 12pt",
+        "spacing": "double",
+        "alignment": "left",
+        "first_line_indent": "0.5 inch",
+        "no_extra_space_between_paragraphs": true
+      },
+      "in_text_citation": {
+        "rules": "Author-Date system",
+        "single_author": {
+          "format": "(Author, Year)",
+          "example": "(Smith, 2020)",
+          "narrative": "Smith (2020) found that..."
+        },
+        "two_authors": {
+          "format": "(Author1 & Author2, Year)",
+          "example": "(Smith & Jones, 2020)",
+          "narrative": "Smith and Jones (2020) found that...",
+          "note": "Use & inside parens, 'and' in narrative"
+        },
+        "three_or_more_authors": {
+          "format": "(FirstAuthor et al., Year)",
+          "example": "(Smith et al., 2020)",
+          "note": "et al. always has a period after 'al'"
+        },
+        "direct_quote": {
+          "format": "(Author, Year, p. PageNumber)",
+          "example": "(Smith, 2020, p. 45)",
+          "short_quote": "under 40 words — in quotation marks in text",
+          "long_quote": "40+ words — block quote, indent 0.5 inch, no quotes"
+        },
+        "no_author": {
+          "format": "(\"Title\", Year) or (Organization, Year)"
+        },
+        "common_errors_to_fix": [
+          "Missing parentheses around citation",
+          "Missing comma between author and year",
+          "'and' instead of '&' inside parentheses",
+          "Missing period after 'al' in et al.",
+          "et al. used for only 1 or 2 authors",
+          "Year missing from citation",
+          "Author last name misspelled or wrong order"
+        ]
+      },
+      "reference_page": {
+        "heading": {
+          "text": "References",
+          "format": "centered, bold, title case",
+          "level": 1,
+          "note": "Rename 'Works Cited' or 'Bibliography' to 'References'"
+        },
+        "order": "alphabetical by author last name",
+        "indent": {
+          "type": "hanging",
+          "size": "0.5 inch",
+          "description": "First line flush left, subsequent lines indented 0.5 inch"
+        },
+        "spacing": "double spaced, no extra space between entries",
+        "doi_format": "https://doi.org/xxxxx (hyperlink, not underlined)",
+        "url_format": "Retrieved from https://www.example.com"
+      },
+      "reference_formats": {
+        "single_author_book": {
+          "format": "Author, A. A. (Year). Title of book in sentence case. Publisher.",
+          "example": "Smith, J. A. (2020). The science of learning. Academic Press."
+        },
+        "two_author_book": {
+          "format": "Author, A. A., & Author, B. B. (Year). Title of book. Publisher.",
+          "example": "Smith, J. A., & Jones, B. C. (2019). Research methods. Wiley."
+        },
+        "three_plus_author_book": {
+          "format": "Author, A. A., Author, B. B., & Author, C. C. (Year). Title. Publisher.",
+          "note": "List up to 20 authors. For 21+, list first 19, ..., last author"
+        },
+        "journal_article": {
+          "format": "Author, A. A. (Year). Title of article in sentence case. Journal Name in Title Case, Volume(Issue), Pages. https://doi.org/xxxxx",
+          "example": "Smith, J. A. (2020). Effects of social media on youth. Journal of Communication, 45(3), 112–130. https://doi.org/10.1234/jc.2020.45"
+        },
+        "website": {
+          "format": "Author, A. A. (Year, Month Day). Title of page. Website Name. URL",
+          "example": "Smith, J. (2021, March 5). Digital literacy in schools. Education Today. https://www.educationtoday.com/article"
+        },
+        "edited_book_chapter": {
+          "format": "Author, A. A. (Year). Title of chapter. In E. Editor (Ed.), Title of book (pp. xx–xx). Publisher."
+        }
+      },
+      "common_mistakes": [
+        "Using 'Works Cited' instead of 'References'",
+        "Not double-spacing reference entries",
+        "No hanging indent in references",
+        "Using first names instead of initials in references",
+        "Missing year in parentheses in references",
+        "No comma after author last name in references",
+        "Capitalizing all words in article/book titles (use sentence case for titles, title case for journals)",
+        "Missing DOI or URL for online sources",
+        "Using 'p.' for page numbers in citations without direct quotes",
+        "Running head on student papers (not required in APA 7th)",
+        "No abstract when one is expected",
+        "Keywords not italicized",
+        "First-line indent in abstract",
+        "Headings not bold",
+        "Level 2 headings centered instead of left-aligned"
+      ],
+      "what_agent_should_fix": {
+        "always_fix": [
+          "Rename 'Works Cited' / 'Bibliography' to 'References'",
+          "Apply 1-inch margins all sides",
+          "Apply Times New Roman 12pt to all text",
+          "Apply double spacing to all paragraphs",
+          "Level-1 headings: centered, bold, title case",
+          "Level-2 headings: left, bold, title case",
+          "Level-3 headings: left, bold italic, title case",
+          "Abstract body: no first-line indent",
+          "Body paragraphs: 0.5-inch first-line indent",
+          "References: 0.5-inch hanging indent",
+          "Fix bare citations missing parentheses: Smith 2018 → (Smith, 2018)",
+          "Fix missing comma in citations: (Smith 2018) → (Smith, 2018)",
+          "Fix 'and' to '&' in parenthetical two-author citations",
+          "Fix et al without period: et al 2017 → et al., 2017",
+          "Format bare reference entries to APA Author, I. (Year). Title.",
+          "Split multiple references jammed into one paragraph",
+          "Separate inline keywords from abstract body",
+          "Flag truncated/incomplete sentences",
+          "Normalise doi: prefix to https://doi.org/ in reference entries"
+        ],
+        "flag_for_review": [
+          "Truncated or incomplete sentences",
+          "Apparent typos in text (e.g. 'Tee' in running text)",
+          "Missing page numbers for direct quotes",
+          "Reference entries where journal/publisher info is missing",
+          "Citations in text with no matching reference entry"
+        ]
+      }
+    },
+    "MLA": {
+      "edition": "9th",
+      "general_format": {
+        "paper_size": "8.5 x 11 inches",
+        "margin": "1 inch on all sides",
+        "line_spacing": "double",
+        "font": "Times New Roman 12",
+        "alignment": "left",
+        "paragraph_indent": "0.5 inch",
+        "header": {
+          "position": "top right",
+          "format": "LastName PageNumber",
+          "example": "Smith 1"
+        },
+        "first_page_header": {
+          "elements_order": [
+            "student_name",
+            "instructor_name",
+            "course_name",
+            "date"
+          ],
+          "format": "left aligned, each on own line",
+          "date_format": "Day Month Year (e.g. 15 March 2024)"
+        },
+        "title": {
+          "position": "centered, on line after date",
+          "format": "title case, not bold, not italic, not underlined",
+          "no_title_page": true
+        }
+      },
+      "headings": {
+        "note": "MLA does not prescribe specific heading levels — use consistently",
+        "recommended_format": "bold or italic, consistent throughout",
+        "level1": {
+          "format": "Bold, Title Case, Left Aligned"
+        },
+        "level2": {
+          "format": "Bold Italic, Title Case, Left Aligned"
+        }
+      },
+      "in_text_citation": {
+        "rules": "Author-Page system",
+        "single_author": {
+          "format": "(Author PageNumber)",
+          "example": "(Smith 45)",
+          "note": "No comma between author and page"
+        },
+        "two_authors": {
+          "format": "(Author1 and Author2 PageNumber)",
+          "example": "(Smith and Jones 45)"
+        },
+        "three_or_more_authors": {
+          "format": "(Author et al. PageNumber)",
+          "example": "(Smith et al. 45)"
+        },
+        "no_page_number": {
+          "format": "(Author)",
+          "example": "(Smith)"
+        },
+        "no_author": {
+          "format": "(\"Shortened Title\" PageNumber)",
+          "example": "(\"Digital Literacy\" 12)"
+        }
+      },
+      "works_cited_page": {
+        "heading": {
+          "text": "Works Cited",
+          "format": "centered, not bold, not italic, title case"
+        },
+        "order": "alphabetical by author last name",
+        "indent": {
+          "type": "hanging",
+          "size": "0.5 inch"
+        },
+        "spacing": "double spaced"
+      },
+      "reference_formats": {
+        "book": {
+          "format": "Author LastName, FirstName. Title of Book. Publisher, Year.",
+          "example": "Smith, John. The Art of Writing. Penguin, 2020."
+        },
+        "journal_article": {
+          "format": "Author LastName, FirstName. \"Article Title.\" Journal Name, vol. X, no. X, Year, pp. XX-XX.",
+          "example": "Smith, John. \"Digital Communication.\" Media Studies, vol. 12, no. 3, 2020, pp. 45–67."
+        },
+        "website": {
+          "format": "Author LastName, FirstName. \"Page Title.\" Website Name, Publisher, Date, URL.",
+          "example": "Smith, John. \"AI in Education.\" Tech Today, Google, 5 Mar. 2021, www.techtoday.com/ai."
+        },
+        "edited_book_chapter": {
+          "format": "Author LastName, FirstName. \"Chapter Title.\" Book Title, edited by Editor Name, Publisher, Year, pp. XX-XX."
+        }
+      },
+      "common_mistakes": [
+        "Using 'References' instead of 'Works Cited'",
+        "Adding comma between author and page number in citation",
+        "Using year instead of page number in citation",
+        "Forgetting quotation marks around article titles",
+        "Italicizing article titles (should be quotation marks)",
+        "Not italicizing book and journal titles",
+        "Capitalizing all words in website page titles",
+        "Missing hanging indent",
+        "Not abbreviating months in Works Cited"
+      ]
+    }
+  },
+  "shared_rules": {
+    "truncation_flags": [
+      "Sentence ends mid-word",
+      "Paragraph ends without punctuation and last word < 4 characters",
+      "Obvious incomplete thought"
+    ],
+    "highlight_key": {
+      "cyan": "Heading reformatted",
+      "yellow": "In-text citation fixed",
+      "green": "Reference entry fixed or reformatted",
+      "red": "Warning — incomplete or needs review"
+    }
+  }
+}
