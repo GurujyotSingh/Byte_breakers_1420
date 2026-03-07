@@ -1,4 +1,5 @@
 ﻿# Byte_breakers_1420
+ # IMP NOTE : THE GIVEN STEPS/DETAILS IMPLIES ON MODEL2 AND MODEL 1 IS RULE BASED
 # AGENT PAPERPAL
 An intelligent, AI-powered tool that automatically formats academic manuscripts in APA 7th, MLA 9th, or IEEE style. Features dual-LLM backend (Groq + OpenAI fallback) and supports multiple input formats.
 # Features
@@ -77,3 +78,4 @@ The formatter uses a 5-stage pipeline:
 
 # Example Output
 ![PAPERPAL_IMAGE](https://github.com/user-attachments/assets/5cb2fbf8-e9c8-4903-9487-1a936a8c033c)
+
