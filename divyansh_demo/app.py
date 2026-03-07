@@ -7,6 +7,27 @@ import tempfile
 import os
 from pathlib import Path
 
+# ─── Auto-install missing PDF packages ────────────────────────────────────────
+def _ensure(pkg, import_name=None):
+    import importlib
+    name = import_name or pkg.split("-")[0].replace("-", "_")
+    try:
+        importlib.import_module(name)
+    except ImportError:
+        os.system(f"pip install {pkg} --break-system-packages -q")
+
+_ensure("pypdf", "pypdf")
+_ensure("pdfplumber", "pdfplumber")
+_ensure("reportlab", "reportlab")
+
+# PDF imports
+from pypdf import PdfReader, PdfWriter
+import pdfplumber
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
+from reportlab.lib.styles import getSampleStyleSheet
+
 # ── Force agent.py onto sys.path immediately at startup ──────────────
 # This runs before any function is called, so import always succeeds.
 _THIS_DIR = Path(__file__).resolve().parent
@@ -470,17 +491,31 @@ def read_uploaded_text(uf) -> tuple:
         if len(raw_bytes) > MAX_FILE_BYTES:
             return STUB_TEXT, f"File exceeds {MAX_FILE_MB} MB limit — using demo text."
         if name.endswith(".pdf"):
+            # ── Primary: pdfplumber (best layout-aware extraction) ──
             try:
                 import pdfplumber, io
                 with pdfplumber.open(io.BytesIO(raw_bytes)) as pdf:
                     text = "\n\n".join(p.extract_text() or "" for p in pdf.pages).strip()
                 if text:
                     return text, None
-                return STUB_TEXT, "PDF text extraction returned empty content — using demo text."
-            except ImportError:
-                return STUB_TEXT, "pdfplumber not installed — PDF text extraction unavailable. Using demo text."
-            except Exception as e:
-                return STUB_TEXT, f"PDF read error: {e} — using demo text."
+            except Exception:
+                text = ""
+
+            # ── Fallback: pypdf ──────────────────────────────────────
+            if not text:
+                try:
+                    import io as _io
+                    from pypdf import PdfReader as _PdfReader
+                    reader = _PdfReader(_io.BytesIO(raw_bytes))
+                    text = "\n\n".join(
+                        (page.extract_text() or "") for page in reader.pages
+                    ).strip()
+                except Exception as e:
+                    return STUB_TEXT, f"PDF read error: {e} — using demo text."
+
+            if text:
+                return text, None
+            return STUB_TEXT, "PDF text extraction returned empty content — using demo text."
         elif name.endswith(".docx"):
             from docx import Document as _Doc
             import io
@@ -695,7 +730,6 @@ st.markdown("""
   </div>
   <div class="pp-nav-right">
     <span class="pp-chip chip-purple">⚡ AI Agent</span>
-    <span class="pp-chip chip-teal">✦ Hackathon Demo</span>
   </div>
 </div>
 """, unsafe_allow_html=True)
@@ -734,7 +768,7 @@ left_col, right_col = st.columns([4, 6], gap="large")
 with left_col:
 
     # ── UPLOAD CARD ──────────────────────────────────────────────
-    st.markdown('<div class="pp-card">', unsafe_allow_html=True)
+    
     st.markdown('<div class="pp-card-title"><span class="title-icon">📂</span>Upload Your Manuscript</div>', unsafe_allow_html=True)
 
     uploaded_file = st.file_uploader(
@@ -746,7 +780,7 @@ with left_col:
     st.markdown('</div>', unsafe_allow_html=True)   # close upload card
 
     # ── FORMATTING ENGINE BADGE + DIAGNOSTICS ───────────────────
-    st.markdown('<div class="pp-card" style="margin-top:14px;">', unsafe_allow_html=True)
+    
     st.markdown(
         '<div class="pp-card-title"><span class="title-icon">⚙️</span>Formatting Engine</div>',
         unsafe_allow_html=True
@@ -1085,6 +1119,45 @@ with right_col:
                     p.paragraph_format.first_line_indent = Inches(0.5)
                     p.paragraph_format.line_spacing = Pt(24)
             buf = io.BytesIO(); doc.save(buf); return buf.getvalue()
+
+        def text_to_pdf(text: str) -> bytes:
+            """Convert plain text to a styled PDF using reportlab."""
+            import io as _io
+            from reportlab.lib.pagesizes import letter
+            from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+            from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+            from reportlab.lib.units import inch
+
+            buf = _io.BytesIO()
+            doc = SimpleDocTemplate(
+                buf, pagesize=letter,
+                leftMargin=inch, rightMargin=inch,
+                topMargin=inch, bottomMargin=inch
+            )
+            styles = getSampleStyleSheet()
+            HEADS = {"abstract","introduction","methodology","method",
+                     "results","discussion","conclusion","references","works cited"}
+            heading_style = ParagraphStyle(
+                "H1", parent=styles["Heading1"],
+                fontSize=13, fontName="Times-Bold",
+                spaceAfter=6, spaceBefore=12, alignment=1
+            )
+            body_style = ParagraphStyle(
+                "Body", parent=styles["Normal"],
+                fontSize=12, fontName="Times-Roman",
+                leading=24, firstLineIndent=36
+            )
+            story = []
+            for line in text.splitlines():
+                s = line.strip()
+                if not s:
+                    story.append(Spacer(1, 12))
+                elif s.lower() in HEADS:
+                    story.append(Paragraph(s.title(), heading_style))
+                else:
+                    story.append(Paragraph(s, body_style))
+            doc.build(story)
+            return buf.getvalue()
 
         # Load original bytes
         tmp_path_r = Path(tempfile.gettempdir()) / "paperpal" / (st.session_state.uploaded_name or "")
@@ -1743,6 +1816,24 @@ with right_col:
                 import base64 as _b64
                 _fb64 = _b64.b64encode(fmt_dl_bytes).decode()
                 _MIME = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+
+                # ── PDF export ──────────────────────────────────────────────
+                try:
+                    _pdf_bytes = text_to_pdf(raw or apa_preview(raw))
+                    _pdf_b64   = _b64.b64encode(_pdf_bytes).decode()
+                    _pdf_name  = f"formatted_{used_style.lower()}_{(st.session_state.uploaded_name or 'manuscript').rsplit('.', 1)[0]}.pdf"
+                    _pdf_link  = (
+                        '<a class="dl-option" href="data:application/pdf;base64,' + _pdf_b64 + '" '
+                        'download="' + _pdf_name + '">'
+                        '<div class="dl-icon-wrap" style="background:#FEF2F2;border:1px solid #FECACA;">📕</div>'
+                        '<div class="dl-option-label">PDF Export</div>'
+                        '<div class="dl-option-sub">Downloads <strong>.pdf</strong></div>'
+                        '<span style="background:#FEE2E2;color:#991B1B;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;">DOWNLOAD</span>'
+                        '</a>'
+                    )
+                except Exception:
+                    _pdf_link = ""
+
                 st.markdown(f"""
                 <div class="dl-panel">
                   <div class="dl-panel-header">⬇ Download Full Formatted Document As</div>
@@ -1761,6 +1852,7 @@ with right_col:
                     </a>
                   </div>
                 </div>
+                {_pdf_link}
                 """, unsafe_allow_html=True)
             except Exception:
                 pass
@@ -1905,6 +1997,6 @@ with right_col:
 # ─────────────────────────────────────────────
 st.markdown("""
 <div class="pp-footer">
-  Powered by <strong>AI Agent</strong> · <strong>APA 7th + MLA 9th Rules</strong> · <strong>Smart Doc Detection</strong>
+  Powered by <strong>AI Agent</strong> · <strong>APA 7th + MLA 9th Rules</strong> · <strong>Smart Doc Detection</strong> · <strong>PDF Export</strong>
 </div>
 """, unsafe_allow_html=True)
