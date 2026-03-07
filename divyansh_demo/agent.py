@@ -58,12 +58,7 @@ from langchain.agents import create_react_agent, AgentExecutor
 except ImportError:
 from langchain_classic.agents import create_react_agent, AgentExecutor
 
-# ─── API Key ───────────────────────────────────────────────────────────────────
 
-os.environ[“GROQ_API_KEY”] = os.environ.get(
-“GROQ_API_KEY”,
-“api”
-)
 
 # ══════════════════════════════════════════════════════════════════════════════
 
