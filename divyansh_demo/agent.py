@@ -62,7 +62,7 @@ from langchain_classic.agents import create_react_agent, AgentExecutor
 
 os.environ[“GROQ_API_KEY”] = os.environ.get(
 “GROQ_API_KEY”,
-“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”
+“api”
 )
 
 # ══════════════════════════════════════════════════════════════════════════════
